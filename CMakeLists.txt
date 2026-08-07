@@ -53,6 +53,8 @@ function(configure_target name)
 		$<$<CONFIG:Debug>: -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -fsanitize=address,undefined -static-libasan>
 
 		${STATIC_FLAG}
+
+		-no-pie
 	)
 
 	target_compile_definitions(${name} PRIVATE 
