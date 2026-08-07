@@ -95,6 +95,7 @@ Variant VCF::parseVariant([[maybe_unused]] const std::string_view line)
     return variant;
 }
 
+// Can be done more solid...
 bool VCF::parse()
 {
     const std::string_view fsv(this->buffer, this->bufferSize);
