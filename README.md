@@ -24,6 +24,16 @@ Build _vcf_importer_, using the latest downloaded and built _GCC 16.1 compiler_,
 ```basch
 cmake --build ./build/ --parallel $(nproc)
 ```
+**It is highly recommended to keep different build types (_Release, Debug, RelWithDebInfo_) builds in separate folders.**
+```basch
+# Configure Debug build
+cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+cmake --build build/debug
+
+# Configure Release build
+cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+cmake --build build/release
+```
 ## Usage
 ```basch
 ./vcf_importer --vcf path_to_file.vcf
