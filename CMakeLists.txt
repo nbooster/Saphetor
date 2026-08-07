@@ -43,14 +43,14 @@ function(configure_target name)
 
 		$<$<CONFIG:RelWithDebInfo>: -O2 -g1 -fno-omit-frame-pointer>
 
-		$<$<CONFIG:Debug>: -Og -ggdb -fstack-protector-strong -ftrapv -ftrivial-auto-var-init=zero -fhardened> #-fanalyzer
+		$<$<CONFIG:Debug>: -Og -ggdb -fno-omit-frame-pointer -fstack-protector-strong -ftrapv -ftrivial-auto-var-init=zero -fhardened -fsanitize=address,undefined>  # -thread, -fanalyzer
 
 		-Wall -Wextra -Wpedantic -pedantic-errors -Wsuggest-override -Wduplicated-cond -Wcast-align -Wlogical-op -Wshadow
 		#-Wfloat-equal -Weffc++ -Wconversion -Wsign-conversion -Wold-style-cast -Wcast-qual
 	)
 
 	target_link_options(${name} PRIVATE 
-		$<$<CONFIG:Debug>: -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now>
+		$<$<CONFIG:Debug>: -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -fsanitize=address,undefined -static-libasan>
 
 		${STATIC_FLAG}
 	)
@@ -84,6 +84,19 @@ set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 set(WARNINGS_AS_ERRORS ON)
+
+
+set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+get_filename_component(COMPILER_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
+get_filename_component(COMPILER_LIB_DIR "${COMPILER_DIR}/../lib64" ABSOLUTE)
+
+if(EXISTS "${COMPILER_LIB_DIR}/libstdc++.so")
+
+    list(APPEND CMAKE_BUILD_RPATH "${COMPILER_LIB_DIR}")
+
+endif()
 
 option(BUILD_TESTS "Build unit tests using Catch2" OFF)
 
