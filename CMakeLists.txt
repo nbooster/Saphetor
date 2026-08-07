@@ -43,7 +43,7 @@ function(configure_target name)
 
 		$<$<CONFIG:RelWithDebInfo>: -O2 -g1 -fno-omit-frame-pointer>
 
-		$<$<CONFIG:Debug>: -Og -ggdb -fno-omit-frame-pointer -fstack-protector-strong -ftrapv -ftrivial-auto-var-init=zero -fhardened -fsanitize=address,undefined>  # -thread, -fanalyzer
+		$<$<CONFIG:Debug>: -Og -ggdb -fno-omit-frame-pointer -fstack-protector-strong -ftrapv -ftrivial-auto-var-init=zero -fhardened -fsanitize=address,undefined>  # -fsanitize=thread, -fanalyzer
 
 		-Wall -Wextra -Wpedantic -pedantic-errors -Wsuggest-override -Wduplicated-cond -Wcast-align -Wlogical-op -Wshadow
 		#-Wfloat-equal -Weffc++ -Wconversion -Wsign-conversion -Wold-style-cast -Wcast-qual
