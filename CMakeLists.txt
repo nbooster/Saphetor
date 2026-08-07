@@ -131,6 +131,8 @@ target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS} ${CMAKE_CURRENT_SOU
 
 ############################## THIRDPARTY ##############################
 
+set(FETCHCONTENT_TRY_FIND_PACKAGE_WITH_FIND_PACKAGE ALWAYS)
+
 find_package(OpenMP REQUIRED)
 
 find_package(TBB QUIET)
@@ -167,7 +169,6 @@ FetchContent_Declare(
     SQLiteCpp
     GIT_REPOSITORY https://github.com/SRombauts/SQLiteCpp.git
     GIT_TAG        3.3.3
-    FIND_PACKAGE_ARGS
 )
 
 FetchContent_MakeAvailable(SQLiteCpp)
@@ -181,7 +182,6 @@ FetchContent_Declare(
     libdeflate
     GIT_REPOSITORY https://github.com/ebiggers/libdeflate.git
     GIT_TAG        v1.25
-    FIND_PACKAGE_ARGS
 )
 
 FetchContent_MakeAvailable(libdeflate)
@@ -200,7 +200,6 @@ if( BUILD_TESTS )
 		Catch2
 		GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 		GIT_TAG        v3.15.3
-		FIND_PACKAGE_ARGS
 	)
 
 	FetchContent_MakeAvailable(Catch2)
