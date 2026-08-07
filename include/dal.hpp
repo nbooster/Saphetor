@@ -41,6 +41,8 @@ class DAL final
 	    void print() const;
 	};
 
+	static constexpr size_t MAX_BATCH_SIZE { 6'000 };
+
 	static constexpr size_t NUMERIC_EQUALITY_PRECISION { 6 };
 
 	static constexpr size_t COLUMNS { 5 };

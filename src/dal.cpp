@@ -101,7 +101,7 @@ DAL::DalConfig DAL::fromEnvironment()
 
     cfg.mmapSizeBytes = getEnvInt("SAPHETOR_MMAP_SIZE_BYTES", 2'147'483'648);
 
-    cfg.batchSize = std::max(static_cast<ssize_t>(1), getEnvInt("SAPHETOR_QUERY_BATCH_SIZE", 20)); 
+    cfg.batchSize = std::min(std::max(static_cast<ssize_t>(1), getEnvInt("SAPHETOR_QUERY_BATCH_SIZE", 20)), static_cast<ssize_t>(DAL::MAX_BATCH_SIZE)); 
 
     return cfg;
 }
