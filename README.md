@@ -118,12 +118,13 @@ and then all of them are inserted fast (in batches) into the 'variants' table.
 It finally queries the table to get the total number records (valid variants)
 that were successfully inserted.
 
-*TODO: The json string creation method can be optimized even more...
+TODO 1: The json string creation method can be optimized even more.
+TODO 2: The .vcf parser can be made more robust/complete.
 
-**Execution speed can be improved even more by using a custom malloc lib
+*Execution speed can be improved even more by using a custom malloc lib
 (with LD_PRELOAD for example) like: mimalloc, tcmalloc, jemalloc...
 
-***For the big input file (C++ dev_assignment.vcf.gz) of the assignment,
+**For the big input file (C++ dev_assignment.vcf.gz) of the assignment,
 of total size: ~600 MB uncompressed, it finishes in ~ 9.5 secs,
 on an Intel(R) Xeon(R) Gold 5315Y CPU @ 3.20GHz.
 ```
