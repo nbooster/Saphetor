@@ -91,7 +91,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 get_filename_component(COMPILER_DIR ${CMAKE_CXX_COMPILER} DIRECTORY)
 get_filename_component(COMPILER_LIB_DIR "${COMPILER_DIR}/../lib64" ABSOLUTE)
 
-if(EXISTS "${COMPILER_LIB_DIR}/libstdc++.so")
+if( EXISTS "${COMPILER_LIB_DIR}/libstdc++.so" )
 
     list(APPEND CMAKE_BUILD_RPATH "${COMPILER_LIB_DIR}")
 
