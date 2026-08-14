@@ -133,8 +133,6 @@ endif()
 
 message(STATUS "C++ Version: ${CMAKE_CXX_STANDARD}")
 
-configure_target(${PROJECT_NAME})
-
 set(CMAKE_INCLUDE_CURRENT_DIR OFF)
 
 file(GLOB SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -206,6 +204,8 @@ set_target_properties(libdeflate_static PROPERTIES INTERPROCEDURAL_OPTIMIZATION 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG})
 
+configure_target(${PROJECT_NAME})
+
 if( BUILD_TESTS )
 
     enable_testing()
@@ -222,11 +222,11 @@ if( BUILD_TESTS )
 
 	add_executable(${TESTS_NAME})
 
-	configure_target(${TESTS_NAME})
-
 	target_sources(${TESTS_NAME} PRIVATE ${SOURCES} ${HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/tests/${TESTS_NAME}.cpp)
 
 	target_link_libraries(${TESTS_NAME} PRIVATE SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG} Catch2::Catch2WithMain)
+
+	configure_target(${TESTS_NAME})
 
 	include(Catch)
 
