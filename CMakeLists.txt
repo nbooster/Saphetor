@@ -39,7 +39,7 @@ function(configure_target name)
 	endif()
 
 	target_compile_options(${name} PRIVATE
-		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector -fno-plt>
+		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector> # -fno-plt
 
 		$<$<CONFIG:RelWithDebInfo>: -g1 -fno-omit-frame-pointer>
 
@@ -56,7 +56,7 @@ function(configure_target name)
 
 		${STATIC_FLAG}
 
-		-no-pie -fuse-linker-plugin
+		-no-pie # -fuse-linker-plugin
 	)
 
 	target_compile_definitions(${name} PRIVATE 
