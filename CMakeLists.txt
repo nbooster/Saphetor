@@ -56,7 +56,7 @@ function(configure_target name)
 
 		${STATIC_FLAG}
 
-		-no-pie
+		-no-pie -fuse-linker-plugin
 	)
 
 	target_compile_definitions(${name} PRIVATE 
