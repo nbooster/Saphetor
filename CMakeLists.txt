@@ -119,8 +119,6 @@ message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 message(STATUS "Targets Binary Directory: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
-add_executable(${PROJECT_NAME})
-
 if( CMAKE_CXX_COMPILER_LOADED )
 
 	message(STATUS "Compiler path: ${CMAKE_CXX_COMPILER}")
@@ -139,7 +137,9 @@ file(GLOB SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 file(GLOB HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
 
-target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/${NAME}.cpp)
+add_library(${NAME}_core OBJECT ${SOURCES} ${HEADERS})
+
+configure_target(${NAME}_core)
 
 ############################## THIRDPARTY ##############################
 
@@ -202,9 +202,13 @@ set_target_properties(libdeflate_static PROPERTIES INTERPROCEDURAL_OPTIMIZATION 
 
 ########################################################################
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG})
+target_link_libraries(${NAME}_core PUBLIC SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG})
+
+add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${NAME}.cpp)
 
 configure_target(${PROJECT_NAME})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${NAME}_core)
 
 if( BUILD_TESTS )
 
@@ -220,13 +224,11 @@ if( BUILD_TESTS )
 
 	set(TESTS_NAME test_${NAME})
 
-	add_executable(${TESTS_NAME})
-
-	target_sources(${TESTS_NAME} PRIVATE ${SOURCES} ${HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/tests/${TESTS_NAME}.cpp)
-
-	target_link_libraries(${TESTS_NAME} PRIVATE SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG} Catch2::Catch2WithMain)
+	add_executable(${TESTS_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/tests/${TESTS_NAME}.cpp)
 
 	configure_target(${TESTS_NAME})
+
+    target_link_libraries(${TESTS_NAME} PRIVATE ${NAME}_core Catch2::Catch2WithMain)
 
 	include(Catch)
 
