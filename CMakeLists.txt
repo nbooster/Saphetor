@@ -83,7 +83,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
+set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
 
 set(WARNINGS_AS_ERRORS ON)
 
@@ -130,16 +130,6 @@ if( CMAKE_CXX_COMPILER_LOADED )
 endif()
 
 message(STATUS "C++ Version: ${CMAKE_CXX_STANDARD}")
-
-set(CMAKE_INCLUDE_CURRENT_DIR OFF)
-
-file(GLOB SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-
-file(GLOB HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
-
-add_library(${NAME}_core OBJECT ${SOURCES} ${HEADERS})
-
-configure_target(${NAME}_core)
 
 ############################## THIRDPARTY ##############################
 
@@ -201,6 +191,16 @@ FetchContent_MakeAvailable(libdeflate)
 set_target_properties(libdeflate_static PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 ########################################################################
+
+set(CMAKE_INCLUDE_CURRENT_DIR OFF)
+
+file(GLOB SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+
+file(GLOB HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
+
+add_library(${NAME}_core OBJECT ${SOURCES} ${HEADERS})
+
+configure_target(${NAME}_core)
 
 target_link_libraries(${NAME}_core PUBLIC SQLiteCpp OpenMP::OpenMP_CXX libdeflate::libdeflate_static Boost::headers ${TBB_LINK_FLAG})
 
