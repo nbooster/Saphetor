@@ -39,7 +39,7 @@ function(configure_target name)
 	endif()
 
 	target_compile_options(${name} PRIVATE
-		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector -funroll-loops> # -fno-plt
+		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector -funroll-loops> # -fno-except -fno-plt
 
 		$<$<CONFIG:RelWithDebInfo>: -g1 -fno-omit-frame-pointer>
 
