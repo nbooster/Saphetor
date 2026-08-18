@@ -62,7 +62,7 @@ SAPHETOR_QUERY_BATCH_SIZE (default: 20) # batch number of queries for faster var
 ```cmake
 OS: Linux
 Compiler: GCC with C++ 23 support
-Build system: CMake version 3.28
+Build system: CMake version 3.29
 Underlying: Unix Makefiles or Ninja
 ```
 ## Thirdparty Libs Dependency
