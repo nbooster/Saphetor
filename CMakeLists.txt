@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.29)
 
 set(NAME vcf_importer)
 
@@ -39,7 +39,7 @@ function(configure_target name)
 	endif()
 
 	target_compile_options(${name} PRIVATE
-		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector> # -fno-plt
+		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector -funroll-loops> # -fno-plt
 
 		$<$<CONFIG:RelWithDebInfo>: -g1 -fno-omit-frame-pointer>
 
@@ -82,6 +82,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_CXX_LINKER_TYPE MOLD)
 
 set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
 
