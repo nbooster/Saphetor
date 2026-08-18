@@ -122,7 +122,7 @@ TODO 1: The json string creation method can be optimized even more.
 TODO 2: The .vcf (encoding) parser can be made more robust/complete/fast.
 TODO 3: SQLite C API can be used directly, instead of the CPP lib which also has exceptions.
 TODO 4: PGO can be used for further binary optimization.
-TODO 5: Different SQL lib can be used for faster execution (example: ClickHouse, DuckDB, PostgreSQL ...).
+TODO 5: Different SQL libs can be tried for faster execution (example: ClickHouse, DuckDB, PostgreSQL ...).
 
 *Execution speed can be improved even more by using a custom malloc lib
 (with LD_PRELOAD for example) like: mimalloc, tcmalloc, jemalloc...
