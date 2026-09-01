@@ -18,10 +18,6 @@ function(configure_target name)
 
 	endif()
 
-    set_target_properties(${name} PROPERTIES 
-		COMPILE_WARNING_AS_ERROR ${WARNINGS_AS_ERRORS}
-	)
-
 	message(STATUS "Target: ${name} Warnings As Errors: ${WARNINGS_AS_ERRORS}")
 
 	set(STATIC_FLAG "")
@@ -39,7 +35,7 @@ function(configure_target name)
 	endif()
 
 	target_compile_options(${name} PRIVATE
-		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=native -fno-pic -fno-rtti -fno-stack-protector -funroll-loops> # -fno-except -fno-plt
+		$<$<CONFIG:Release>: -ffast-math -march=${ARCH_FLAG} -mtune=znver3 -fno-rtti -fno-stack-protector -funroll-loops> # -fno-except -fno-plt
 
 		$<$<CONFIG:RelWithDebInfo>: -g1 -fno-omit-frame-pointer>
 
@@ -52,20 +48,28 @@ function(configure_target name)
 	target_link_options(${name} PRIVATE 
 		$<$<CONFIG:Release>: -s>
 
-		$<$<CONFIG:Debug>: -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -fsanitize=address,undefined -static-libasan>
+		$<$<CONFIG:Debug>: -Wl,-z,noexecstack -fsanitize=address,undefined -static-libasan>
 
 		${STATIC_FLAG}
 
-		-no-pie # -fuse-linker-plugin
+		# -fuse-linker-plugin
 	)
 
 	target_compile_definitions(${name} PRIVATE 
 		$<$<CONFIG:Debug>: _GLIBCXX_DEBUG>
 	)
-
-	set_target_properties(${name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
-
-	set_target_properties(${name} PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE)
+	
+	set_target_properties(${name} PROPERTIES
+		COMPILE_WARNING_AS_ERROR ${WARNINGS_AS_ERRORS}
+	    CXX_STANDARD 26
+	    CXX_STANDARD_REQUIRED ON
+		POSITION_INDEPENDENT_CODE OFF
+	    CXX_EXTENSIONS ON
+		CXX_VISIBILITY_PRESET hidden
+    	VISIBILITY_INLINES_HIDDEN ON
+		INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
+		INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE
+	)
 
 	target_include_directories(${name} PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -76,13 +80,8 @@ endfunction()
 set(CMAKE_NO_VERBOSE)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_CXX_LINKER_TYPE MOLD)
+set(CMAKE_CXX_LINKER_TYPE MOLD) # LLD, GOLD
 
 set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
 
